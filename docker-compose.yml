@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    image: resume-injection-poc
+    container_name: rim_api
+    ports:
+      - "8000:8000"
+    environment:
+      # Optionally set OPENAI_API_KEY in your environment
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+
+  ui:
+    build: .
+    image: resume-injection-poc
+    container_name: rim_ui
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    command: streamlit run /app/ui/streamlit_app.py --server.port 8501 --server.headless true

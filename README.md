@@ -60,6 +60,24 @@ The package requires Python 3.9+. VDA uses `pdf2image`, which requires Poppler:
 sudo apt-get install poppler-utils
 ```
 
+Additionally, this project requires the Tesseract OCR engine for offline OCR. Install Tesseract on your system and ensure the `tesseract` executable is on your `PATH`.
+
+Windows (recommended):
+
+- Install via Chocolatey (requires admin):
+
+```powershell
+choco install tesseract -y
+```
+
+- Or download the official installer from the Tesseract project and add the install folder to your `PATH`.
+
+Verify installation:
+
+```powershell
+tesseract --version
+```
+
 LLM-based components require an OpenAI API key:
 
 ```bash
@@ -102,6 +120,23 @@ The generated outputs from running the released code are included under:
 examples/results/hcd/
 examples/results/vda/
 ```
+
+## Docker (recommended for portable testing)
+
+Build and run the PoC in a Docker container (includes Tesseract and Poppler):
+
+```bash
+# from repo root
+docker build -t resume-injection-poc .
+docker run -p 8000:8000 resume-injection-poc
+```
+
+Then test the running container:
+
+```bash
+curl -F "file=@examples/pdfs/data_skills_keywords_case.pdf" http://127.0.0.1:8000/analyze
+```
+
 
 ## Command Line Tools
 
